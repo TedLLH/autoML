@@ -1,6 +1,6 @@
 #this script is for generating breakdown report for each label's precision, recall and amount of images, since autoML Beta does not offre such features
 
-#just seach the word 'EDIT' and alter that part in order to make the script works.
+#just seach the word 'EDIT' and alter the parts in order to make the script works.
 
 import pandas as pd
 import time
@@ -27,10 +27,10 @@ driver.get(imgTabURL)
 #login
 try:
     input_element_account = driver.find_element_by_id("identifierId")
-    #EDIT login name
-    input_element_account.send_keys("")
+    #EDIT login name of your google account
+    input_element_account.send_keys("")#enter account name here
 except:
-    print('cannot type account name')
+    print('login name error')
 
 try:
     next_button = driver.find_element_by_id("identifierNext")
@@ -42,8 +42,8 @@ except:
 #password
 try:
     input_element_pw = driver.find_element_by_xpath("//div[@id='password']/div/div/div/input")
-    #EDIT login password
-    input_element_pw.send_keys("")
+    #EDIT login password of your google account
+    input_element_pw.send_keys("")#enter password here
     time.sleep(0.5)
 except:
     print('cannot enter password')
@@ -94,13 +94,14 @@ except:
 try:
     for i in automl_label_name:
         automl_label_name_list.append(i.text)
-#     print(automl_label_name_list)
+
 except:
     print('for loop does not work for automl_label_name')
 
 #precision
 automl_label_precision=[]
 automl_label_recall=[]
+
 try:
     for i in automl_label_name_list:
         time.sleep(0.5)
@@ -120,6 +121,6 @@ brandname_precision_recall = {"brand_name":automl_label_name_list,
                               "image_amount":automl_label_images_amount,
                              "precision":automl_label_precision,
                              "recall":automl_label_recall}
-brandname_precision_recall_tocsv = pd.DataFrame(brandname_precision_recall)
-brandname_precision_recall_tocsv.to_csv(csv_file_name + '.csv')
+brandname_precision_recall_tocsv = pd.DataFrame(brandname_precision_recall,)
+brandname_precision_recall_tocsv.to_csv(csv_file_name + '.csv', index=False)
 print(csv_file_name + ' was successfully created!')
