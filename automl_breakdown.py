@@ -12,21 +12,22 @@ from selenium.webdriver.firefox.options import Options
 
 options=Options()
 options.set_headless(headless=True)
+#EDIT using firefox webdriver
 driver = webdriver.Firefox(firefox_options=options)
 driver.implicitly_wait(3)
 
-##### EDIT csv_file_name and url
-csv_file_name='breakdownReport/top1000Banner250Labels_v1'
-eval_url = 'https://beta-dot-custom-vision.appspot.com/vision/datasets/evaluate?dataset=ICN7910358500918591982&model=ICN3080717473324200459&project=admangoml'
-images_url = 'https://beta-dot-custom-vision.appspot.com/vision/datasets/details?dataset=ICN7910358500918591982&model=ICN3080717473324200459&project=admangoml'
+#EDIT csv_file_name, image_tab url and eval_tab url
+csv_file_name='breakdownReport/'
+evalTabURL = ''
+imgTabURL = ''
 
 #image_url for image amount
-driver.get(images_url)
+driver.get(imgTabURL)
 
 #login
 try:
     input_element_account = driver.find_element_by_id("identifierId")
-    #login name
+    #EDIT login name
     input_element_account.send_keys("")
 except:
     print('cannot type account name')
@@ -41,7 +42,7 @@ except:
 #password
 try:
     input_element_pw = driver.find_element_by_xpath("//div[@id='password']/div/div/div/input")
-    #login password
+    #EDIT login password
     input_element_pw.send_keys("")
     time.sleep(0.5)
 except:
@@ -53,7 +54,7 @@ try:
 except:
     print('cannot click next button in pw page')
 
-#after login, wait 5 seconds for automl to redirect
+#after login, wait 7 seconds for automl to redirect
 time.sleep(7)
 
 #get images amount
@@ -78,10 +79,10 @@ try:
     print(automl_label_images_amount)
 
 except:
-    print('I dont feel so good...')
+    print('could not retrieve automl_label_images_amount')
     
-#eval_url for brand name, precision and recall
-driver.get(eval_url)
+#evalTabURL for label name, precision and recall
+driver.get(evalTabURL)
 
 #label name
 automl_label_name_list=[]
@@ -121,5 +122,4 @@ brandname_precision_recall = {"brand_name":automl_label_name_list,
                              "recall":automl_label_recall}
 brandname_precision_recall_tocsv = pd.DataFrame(brandname_precision_recall)
 brandname_precision_recall_tocsv.to_csv(csv_file_name + '.csv')
-brandname_precision_recall_tocsv=pd.read_csv(csv_file_name + '.csv', index_col=0)
 print(csv_file_name + ' was successfully created!')
