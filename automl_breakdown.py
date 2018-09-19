@@ -1,3 +1,7 @@
+#this script is for generating breakdown report for each label's precision, recall and amount of images, since autoML Beta does not offre such features
+
+#just seach the word 'EDIT' and alter that part in order to make the script works.
+
 import pandas as pd
 import time
 from selenium import webdriver
@@ -11,10 +15,10 @@ options.set_headless(headless=True)
 driver = webdriver.Firefox(firefox_options=options)
 driver.implicitly_wait(3)
 
-#edit csv_file_name and url
-csv_file_name='breakdownReport/top1000Banner125_v1'
-eval_url = 'https://beta-dot-custom-vision.appspot.com/vision/datasets/evaluate?dataset=ICN4830005838330278089&model=ICN5826554418379076475&project=admangoml'
-images_url = 'https://beta-dot-custom-vision.appspot.com/vision/datasets/details?dataset=ICN4830005838330278089&model=ICN5826554418379076475&project=admangoml'
+##### EDIT csv_file_name and url
+csv_file_name='breakdownReport/top1000Banner250Labels_v1'
+eval_url = 'https://beta-dot-custom-vision.appspot.com/vision/datasets/evaluate?dataset=ICN7910358500918591982&model=ICN3080717473324200459&project=admangoml'
+images_url = 'https://beta-dot-custom-vision.appspot.com/vision/datasets/details?dataset=ICN7910358500918591982&model=ICN3080717473324200459&project=admangoml'
 
 #image_url for image amount
 driver.get(images_url)
@@ -23,7 +27,7 @@ driver.get(images_url)
 try:
     input_element_account = driver.find_element_by_id("identifierId")
     #login name
-    input_element_account.send_keys("ted.liu@admango.com")
+    input_element_account.send_keys("")
 except:
     print('cannot type account name')
 
@@ -38,7 +42,7 @@ except:
 try:
     input_element_pw = driver.find_element_by_xpath("//div[@id='password']/div/div/div/input")
     #login password
-    input_element_pw.send_keys("hong060524413903")
+    input_element_pw.send_keys("")
     time.sleep(0.5)
 except:
     print('cannot enter password')
