@@ -34,34 +34,36 @@ def prediction(imgName):
 
     result = get_prediction(content, project_id,  model_id)
     print(result.payload)
-    try:
-        class_id = result.payload[0].display_name
-    except:
-        class_id = 'disgards'
 
-    try:
-        score = result.payload[0].classification.score
-    except:
-        score = 0
+    for i in range(len(result.payload)):
+        try:
+            class_id = result.payload[i].display_name
+        except:
+            class_id = 'disgards'
+
+        try:
+            score = result.payload[i].classification.score
+        except:
+            score = 0
 
 
-    if score > 0.5:
-        #####EDIT all the 'PATH' & URL to downlonad images based on prediction
-        if not os.path.exists('PATH/' + class_id):
-            os.makedirs('PATH/' + class_id)
-            urllib.urlretrieve('URL' + str(imgName), 'PATH/' + class_id + '/' + imgName)
-            print('scores > 0.5, img downloaded')
+        if score > 0.5:
+            #####EDIT all the 'PATH' & URL to downlonad images based on prediction
+            if not os.path.exists('PATH/' + class_id):
+                os.makedirs('PATH/' + class_id)
+                urllib.urlretrieve('URL' + str(imgName), 'PATH/' + class_id + '/' + imgName)
+                print('scores > 0.5, img downloaded')
+            else:
+                urllib.urlretrieve('URL' + str(imgName), 'PATH/' + class_id + '/' + imgName)
+                print('scores > 0.5, img downloaded')
         else:
-            urllib.urlretrieve('URL' + str(imgName), 'PATH/' + class_id + '/' + imgName)
-            print('scores > 0.5, img downloaded')
-    else:
-        if not os.path.exists('PATH/' + class_id):
-            os.makedirs('PATH/' + class_id)
-            urllib.urlretrieve('URL' + str(imgName), 'PATH/' + class_id + '/' + imgName)
-            print('scores < 0.5, img downloaded')
-        else:
-            urllib.urlretrieve('URL' + str(imgName), 'PATH/' + class_id + '/' + imgName)
-            print('scores < 0.5, img downloaded')
+            if not os.path.exists('PATH/' + class_id):
+                os.makedirs('PATH/' + class_id)
+                urllib.urlretrieve('URL' + str(imgName), 'PATH/' + class_id + '/' + imgName)
+                print('scores < 0.5, img downloaded')
+            else:
+                urllib.urlretrieve('URL' + str(imgName), 'PATH/' + class_id + '/' + imgName)
+                print('scores < 0.5, img downloaded')
 
 
 if __name__ == '__main__':
